@@ -13,6 +13,7 @@ export default {
   created () {
     api.getTools()
       .then(response => {
+        console.error(response)
         this.ferramentas = response
       })
   },
