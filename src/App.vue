@@ -1,28 +1,25 @@
-<template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+<template lang='pug'>
+#app
+  div(
+    v-for='ferramenta of ferramentas',
+    data-set='ferramenta'
+  ) {{ ferramenta.title }}
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import api from '@/services/api'
 
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
+  created () {
+    api.getTools()
+      .then(response => {
+        this.ferramentas = response
+      })
+  },
+  data () {
+    return {
+      ferramentas: []
+    }
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
