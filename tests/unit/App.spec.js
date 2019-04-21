@@ -1,7 +1,8 @@
 jest.mock('@/services/api', () => {
   return {
-    getTools: jest.fn(),
-    createTool: jest.fn()
+    removeTool: jest.fn(),
+    createTool: jest.fn(),
+    getTools: jest.fn()
   }
 })
 
@@ -16,8 +17,8 @@ describe('App', async () => {
     localVue = createLocalVue()
   })
 
-  describe('renderiza a lista de ferramentas', async () => {
-    it('quando a lista não possui qualquer ferramenta', async () => {
+  describe('lista', async () => {
+    it('não deve apresentar a lista', async () => {
       api.getTools.mockImplementationOnce(() => {
         const result = []
         return Promise.resolve(result)
@@ -28,7 +29,7 @@ describe('App', async () => {
       expect(wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(0)
     })
 
-    it('quando a lista possui apenas uma ferramenta', async () => {
+    it('deve apresentar uma lista de tamanho 1', async () => {
       api.getTools.mockImplementationOnce(() => {
         const result = [
           { title: 'Ferramenta 1' }
@@ -41,7 +42,7 @@ describe('App', async () => {
       expect(wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(1)
     })
 
-    it('quando a lista possui mais que uma ferramenta', async () => {
+    it('deve apresentar uma lista de tamanho 2', async () => {
       api.getTools.mockImplementationOnce(() => {
         const result = [
           { title: 'Ferramenta 1' },
@@ -56,7 +57,7 @@ describe('App', async () => {
     })
   })
 
-  describe('adiciona uma nova ferramenta', async () => {
+  describe('adiciona', async () => {
     beforeEach(async () => {
       api.createTool.mockImplementationOnce((tool) => {
         const result = { ...tool, id: 1 }
@@ -64,7 +65,7 @@ describe('App', async () => {
       })
     })
 
-    it('quando a lista não possui qualquer ferramenta', async () => {
+    it('deve apresentar uma lista de tamanho 1', async () => {
       api.getTools.mockImplementationOnce(() => {
         const result = []
         return Promise.resolve(result)
@@ -81,7 +82,7 @@ describe('App', async () => {
       expect(api.createTool).toHaveBeenCalledWith({ title: 'Título da Ferramenta' })
     })
 
-    it('quando a lista possui apenas uma ferramenta', async () => {
+    it('deve apresentar uma lista de tamanho 2', async () => {
       api.getTools.mockImplementationOnce(() => {
         const result = [{ title: 'Título da Ferramenta 1' }]
         return Promise.resolve(result)
@@ -94,7 +95,7 @@ describe('App', async () => {
       expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(2)
     })
 
-    it('quando a lista possui mais que uma ferramenta', async () => {
+    it('deve apresentar uma lista de tamanho 3', async () => {
       api.getTools.mockImplementationOnce(() => {
         const result = [
           { title: 'Título da Ferramenta 1' },
@@ -108,6 +109,43 @@ describe('App', async () => {
       await wrapper.find(`[action-trigger='nova']`).trigger('click')
       await wrapper.find(`[action-trigger='adicionar']`).trigger('click')
       expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(3)
+    })
+  })
+
+  describe('remove', async () => {
+    beforeEach(async () => {
+      api.removeTool.mockImplementationOnce((id) => {
+        const result = {}
+        return Promise.resolve(result)
+      })
+    })
+
+    it('não deve apresentar uma lista', async () => {
+      api.getTools.mockImplementationOnce(() => {
+        const result = [{ id: 1, title: 'Título da Ferramenta 1' }]
+        return Promise.resolve(result)
+      })
+      const wrapper = await mount(App, {
+        localVue
+      })
+      await wrapper.find(`[action-trigger='remover']`).trigger('click')
+      expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(0)
+      expect(api.removeTool).toHaveBeenCalledWith(1)
+    })
+
+    it('deve apresentar uma lista de tamanho 1', async () => {
+      api.getTools.mockImplementationOnce(() => {
+        const result = [
+          { id: 1, title: 'Título da Ferramenta 1' },
+          { id: 2, title: 'Título da Ferramenta 2' }
+        ]
+        return Promise.resolve(result)
+      })
+      const wrapper = await mount(App, {
+        localVue
+      })
+      await wrapper.find(`[action-trigger='remover']`).trigger('click')
+      expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(1)
     })
   })
 })

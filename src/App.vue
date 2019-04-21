@@ -9,9 +9,11 @@
     )
     button(action-trigger='adicionar', @click='adicionar') Adicionar
   div(
-    v-for='ferramenta of ferramentas',
+    v-for='tool of ferramentas',
     data-set='ferramenta'
-  ) {{ ferramenta.title }}
+  )
+    span {{ tool.title }}
+    button(action-trigger='remover', @click='remover(tool)') Remover
 </template>
 
 <script>
@@ -26,6 +28,13 @@ export default {
     },
     changeTitle (event) {
       this.ferramenta.title = event.target.value
+    },
+    remover (to) {
+      api.removeTool(to.id)
+        .then(_ => {
+          this.ferramentas = this.ferramentas
+            .filter(ferramenta => ferramenta.id !== to.id)
+        })
     },
     adicionar () {
       const tool = { ...this.ferramenta }
