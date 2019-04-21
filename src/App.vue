@@ -5,6 +5,12 @@
     :value='criterio',
     @keyup='changeCriterio($event)'
   )
+  input(
+    type='checkbox',
+    data-input='tags',
+    :checked='tags',
+    @click='toggleTags'
+  )
   button(action-trigger='nova', @click='nova') Nova
   div(data-set='nova-ferramenta', v-if='editando')
     input(
@@ -19,6 +25,8 @@
   )
     span {{ tool.title }}
     button(action-trigger='remover', @click='remover(tool)') Remover
+    ul
+      li(v-for='tag in tool.tags') {{ tag }}
 </template>
 
 <script>
@@ -30,6 +38,9 @@ export default {
       this.ferramenta = {
         title: ''
       }
+    },
+    toggleTags () {
+      this.tags = !this.tags
     },
     changeCriterio (event) {
       this.criterio = event.target.value
@@ -60,7 +71,11 @@ export default {
     tools () {
       const re = new RegExp(this.criterio)
       return this.ferramentas
-        .filter(ferramenta => ferramenta.title.match(re) !== null)
+        .filter(ferramenta => {
+          return !this.tags
+            ? ferramenta.title.match(re) !== null
+            : ferramenta.tags.some(tag => tag.match(re) !== null)
+        })
     }
   },
   created () {
@@ -72,6 +87,7 @@ export default {
   data () {
     return {
       criterio: '',
+      tags: false,
       ferramenta: { empty: true },
       ferramentas: []
     }

@@ -150,22 +150,54 @@ describe('App', async () => {
   })
 
   describe('procurar', async () => {
-    it('deve filtrar lista pelo critério em todos os atributos', async () => {
+    let wrapper
+
+    beforeEach(async () => {
       api.getTools.mockImplementationOnce(() => {
         const result = [
-          { id: 1, title: 'Título da Ferramenta 1' },
-          { id: 2, title: 'Título da Ferramenta 2' }
+          { id: 1, title: 'Título da Ferramenta 1', tags: ['a'] },
+          { id: 2, title: 'Título da Ferramenta 2', tags: ['a', 'b', 'c'] },
+          { id: 3, title: 'Título da Ferramenta 3', tags: ['a', 'c'] }
         ]
         return Promise.resolve(result)
       })
-      const wrapper = await mount(App, {
+      wrapper = await mount(App, {
         localVue
       })
-      expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(2)
+      expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(3)
+    })
+
+    it('deve filtrar lista pelo critério em todos os atributos', async () => {
       const input = await wrapper.find(`[data-input='criterio']`)
       input.element.value = 'Ferramenta 2',
       input.trigger('keyup')
       expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(1)
+    })
+
+    describe('filtrar pelo critério apenas nas tags', async () => {
+      it('deve apresentar uma ferramenta', async () => {
+        const criterio = await wrapper.find(`[data-input='criterio']`)
+        criterio.element.value = 'b',
+        criterio.trigger('keyup')
+        await wrapper.find(`[data-input='tags']`).trigger('click')
+        expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(1)
+      })
+
+      it('deve apresentar duas ferramentas', async () => {
+        const criterio = await wrapper.find(`[data-input='criterio']`)
+        criterio.element.value = 'c',
+        criterio.trigger('keyup')
+        await wrapper.find(`[data-input='tags']`).trigger('click')
+        expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(2)
+      })
+
+      it('deve apresentar três ferramentas', async () => {
+        const criterio = await wrapper.find(`[data-input='criterio']`)
+        criterio.element.value = 'a',
+        criterio.trigger('keyup')
+        await wrapper.find(`[data-input='tags']`).trigger('click')
+        expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(3)
+      })
     })
   })
 })
