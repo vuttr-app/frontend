@@ -148,4 +148,24 @@ describe('App', async () => {
       expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(1)
     })
   })
+
+  describe('procurar', async () => {
+    it('deve filtrar lista pelo critério em todos os atributos', async () => {
+      api.getTools.mockImplementationOnce(() => {
+        const result = [
+          { id: 1, title: 'Título da Ferramenta 1' },
+          { id: 2, title: 'Título da Ferramenta 2' }
+        ]
+        return Promise.resolve(result)
+      })
+      const wrapper = await mount(App, {
+        localVue
+      })
+      expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(2)
+      const input = await wrapper.find(`[data-input='criterio']`)
+      input.element.value = 'Ferramenta 2',
+      input.trigger('keyup')
+      expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(1)
+    })
+  })
 })

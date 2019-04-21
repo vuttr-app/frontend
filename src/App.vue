@@ -1,5 +1,10 @@
 <template lang='pug'>
 #app
+  input(
+    data-input='criterio',
+    :value='criterio',
+    @keyup='changeCriterio($event)'
+  )
   button(action-trigger='nova', @click='nova') Nova
   div(data-set='nova-ferramenta', v-if='editando')
     input(
@@ -9,7 +14,7 @@
     )
     button(action-trigger='adicionar', @click='adicionar') Adicionar
   div(
-    v-for='tool of ferramentas',
+    v-for='tool of tools',
     data-set='ferramenta'
   )
     span {{ tool.title }}
@@ -25,6 +30,9 @@ export default {
       this.ferramenta = {
         title: ''
       }
+    },
+    changeCriterio (event) {
+      this.criterio = event.target.value
     },
     changeTitle (event) {
       this.ferramenta.title = event.target.value
@@ -48,6 +56,11 @@ export default {
   computed: {
     editando () {
       return !this.ferramenta.empty
+    },
+    tools () {
+      const re = new RegExp(this.criterio)
+      return this.ferramentas
+        .filter(ferramenta => ferramenta.title.match(re) !== null)
     }
   },
   created () {
@@ -58,6 +71,7 @@ export default {
   },
   data () {
     return {
+      criterio: '',
       ferramenta: { empty: true },
       ferramentas: []
     }
