@@ -23,9 +23,11 @@
     v-for='tool of tools',
     data-set='ferramenta'
   )
-    span {{ tool.title }}
+    a(data-set='link', :href='tool.link')
+      h4(data-set='title') {{ tool.title }}
     button(action-trigger='remover', @click='remover(tool)') Remover
-    ul
+    p(data-set='description') {{ tool.description }}
+    ul(data-set='tags')
       li(v-for='tag in tool.tags') {{ tag }}
 </template>
 

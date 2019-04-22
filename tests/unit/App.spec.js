@@ -32,14 +32,29 @@ describe('App', async () => {
     it('deve apresentar uma lista de tamanho 1', async () => {
       api.getTools.mockImplementationOnce(() => {
         const result = [
-          { title: 'Ferramenta 1' }
+          {
+            title: 'Título',
+            link: 'http://fer.ra/me',
+            description: 'Descrição',
+            tags: ['t1', 't2']
+          }
         ]
         return Promise.resolve(result)
       })
       const wrapper = await mount(App, {
         localVue
       })
-      expect(wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(1)
+      const ferramentas = wrapper.findAll(`[data-set='ferramenta']`)
+      expect(ferramentas).toHaveLength(1)
+      const ferramenta = ferramentas.at(0)
+      expect(ferramenta.find(`[data-set='title']`).text()).toBe('Título')
+      expect(ferramenta.find(`[data-set='link']`).attributes('href'))
+        .toBe('http://fer.ra/me')
+      expect(ferramenta.find(`[data-set='description']`).text())
+        .toBe('Descrição')
+      const tags = ferramenta.find(`[data-set='tags']`)
+      expect(tags.text()).toContain('t1')
+      expect(tags.text()).toContain('t2')
     })
 
     it('deve apresentar uma lista de tamanho 2', async () => {
