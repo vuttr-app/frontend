@@ -39,7 +39,14 @@ export default {
       this.criterio = event.target.value
     },
     remover (to) {
-      this.$emit('remover', to)
+			this.$confirm({
+				title: 'Remover ferramenta',
+				content: 'Você tem certeza que deseja remover esta ferramenta?',
+				customClass: 'data-set-confirm'
+			})
+				.then(() => {
+					this.$emit('remover', to)
+				})
     }
   },
   computed: {
