@@ -1,5 +1,10 @@
 <template lang='pug'>
 #app
+  tool-form(
+    v-if='editando',
+    :tool='ferramenta',
+    @confirmar='adicionar($event)'
+  )
   input(
     data-input='criterio',
     :value='criterio',
@@ -12,28 +17,6 @@
     @click='toggleTags'
   )
   button(action-trigger='nova', @click='nova') Nova
-  div(data-set='nova-ferramenta', v-if='editando')
-    input(
-      data-input='title',
-      :value='ferramenta.title',
-      @change='changeTitle($event)'
-    )
-    input(
-      data-input='link',
-      :value='ferramenta.link',
-      @change='changeLink($event)'
-    )
-    input(
-      data-input='description',
-      :value='ferramenta.description',
-      @change='changeDescription($event)'
-    )
-    input(
-      data-input='marcadores',
-      :value='ferramenta.marcadores',
-      @change='changeMarcadores($event)'
-    )
-    button(action-trigger='adicionar', @click='adicionar') Adicionar
   tool-line(
 		v-for='tool of tools',
 		:tool='tool',
@@ -45,9 +28,10 @@
 <script>
 import api from '@/services/api'
 import ToolLine from '@/components/Line'
+import ToolForm from '@/components/Form'
 
 export default {
-	components: { ToolLine },
+	components: { ToolLine, ToolForm },
   methods: {
     nova () {
       this.ferramenta = {
@@ -60,18 +44,6 @@ export default {
     changeCriterio (event) {
       this.criterio = event.target.value
     },
-    changeMarcadores (event) {
-      this.ferramenta.marcadores = event.target.value
-    },
-    changeDescription (event) {
-      this.ferramenta.description = event.target.value
-    },
-    changeLink (event) {
-      this.ferramenta.link = event.target.value
-    },
-    changeTitle (event) {
-      this.ferramenta.title = event.target.value
-    },
     remover (to) {
       api.removeTool(to.id)
         .then(_ => {
@@ -79,9 +51,9 @@ export default {
             .filter(ferramenta => ferramenta.id !== to.id)
         })
     },
-    adicionar () {
-      const tags = (this.ferramenta.marcadores || '').split(' ')
-      let tool = { ...this.ferramenta, tags }
+    adicionar (ferramenta) {
+      const tags = (ferramenta.marcadores || '').split(' ')
+      let tool = { ...ferramenta, tags }
       delete tool.marcadores
       api.createTool(tool)
         .then(response => {
