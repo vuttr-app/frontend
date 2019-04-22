@@ -5,44 +5,22 @@
     :tool='ferramenta',
     @confirmar='adicionar($event)'
   )
-  input(
-    data-input='criterio',
-    :value='criterio',
-    @keyup='changeCriterio($event)'
-  )
-  input(
-    type='checkbox',
-    data-input='tags',
-    :checked='tags',
-    @click='toggleTags'
-  )
   button(action-trigger='nova', @click='nova') Nova
-  tool-line(
-		v-for='tool of tools',
-		:tool='tool',
-		@remover='remover($event)',
-		data-set='ferramenta'
-  )
+  tool-list(:ferramentas='ferramentas', @remover='remover($event)')
 </template>
 
 <script>
 import api from '@/services/api'
-import ToolLine from '@/components/Line'
+import ToolList from '@/components/List'
 import ToolForm from '@/components/Form'
 
 export default {
-	components: { ToolLine, ToolForm },
+  components: { ToolList, ToolForm },
   methods: {
     nova () {
       this.ferramenta = {
         title: ''
       }
-    },
-    toggleTags () {
-      this.tags = !this.tags
-    },
-    changeCriterio (event) {
-      this.criterio = event.target.value
     },
     remover (to) {
       api.removeTool(to.id)
@@ -65,15 +43,6 @@ export default {
   computed: {
     editando () {
       return !this.ferramenta.empty
-    },
-    tools () {
-      const re = new RegExp(this.criterio)
-      return this.ferramentas
-        .filter(ferramenta => {
-          return !this.tags
-            ? ferramenta.title.match(re) !== null
-            : ferramenta.tags.some(tag => tag.match(re) !== null)
-        })
     }
   },
   created () {
@@ -84,8 +53,6 @@ export default {
   },
   data () {
     return {
-      criterio: '',
-      tags: false,
       ferramenta: { empty: true },
       ferramentas: []
     }
