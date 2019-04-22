@@ -18,6 +18,21 @@
       :value='ferramenta.title',
       @change='changeTitle($event)'
     )
+    input(
+      data-input='link',
+      :value='ferramenta.link',
+      @change='changeLink($event)'
+    )
+    input(
+      data-input='description',
+      :value='ferramenta.description',
+      @change='changeDescription($event)'
+    )
+    input(
+      data-input='marcadores',
+      :value='ferramenta.marcadores',
+      @change='changeMarcadores($event)'
+    )
     button(action-trigger='adicionar', @click='adicionar') Adicionar
   div(
     v-for='tool of tools',
@@ -47,6 +62,15 @@ export default {
     changeCriterio (event) {
       this.criterio = event.target.value
     },
+    changeMarcadores (event) {
+      this.ferramenta.marcadores = event.target.value
+    },
+    changeDescription (event) {
+      this.ferramenta.description = event.target.value
+    },
+    changeLink (event) {
+      this.ferramenta.link = event.target.value
+    },
     changeTitle (event) {
       this.ferramenta.title = event.target.value
     },
@@ -58,7 +82,9 @@ export default {
         })
     },
     adicionar () {
-      const tool = { ...this.ferramenta }
+      const tags = (this.ferramenta.marcadores || '').split(' ')
+      let tool = { ...this.ferramenta, tags }
+      delete tool.marcadores
       api.createTool(tool)
         .then(response => {
           this.ferramentas = [ ...this.ferramentas, { ...response } ]

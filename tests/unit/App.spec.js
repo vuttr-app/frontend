@@ -89,12 +89,26 @@ describe('App', async () => {
         localVue
       })
       await wrapper.find(`[action-trigger='nova']`).trigger('click')
-      const input = wrapper.find(`[data-input='title']`)
-      input.element.value = 'Título da Ferramenta'
-      input.trigger('change')
+      const title = wrapper.find(`[data-input='title']`)
+      title.element.value = 'Título'
+      title.trigger('change')
+      const link = wrapper.find(`[data-input='link']`)
+      link.element.value = 'http://li.nk'
+      link.trigger('change')
+      const description = wrapper.find(`[data-input='description']`)
+      description.element.value = 'Descrição'
+      description.trigger('change')
+      const marcadores = wrapper.find(`[data-input='marcadores']`)
+      marcadores.element.value = 't1 t2'
+      marcadores.trigger('change')
       await wrapper.find(`[action-trigger='adicionar']`).trigger('click')
       expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(1)
-      expect(api.createTool).toHaveBeenCalledWith({ title: 'Título da Ferramenta' })
+      expect(api.createTool).toHaveBeenCalledWith({
+        link: 'http://li.nk',
+        description: 'Descrição',
+        tags: ['t1', 't2'],
+        title: 'Título'
+      })
     })
 
     it('deve apresentar uma lista de tamanho 2', async () => {
