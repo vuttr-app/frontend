@@ -34,22 +34,20 @@
       @change='changeMarcadores($event)'
     )
     button(action-trigger='adicionar', @click='adicionar') Adicionar
-  div(
-    v-for='tool of tools',
-    data-set='ferramenta'
+  tool-line(
+		v-for='tool of tools',
+		:tool='tool',
+		@remover='remover($event)',
+		data-set='ferramenta'
   )
-    a(data-set='link', :href='tool.link')
-      h4(data-set='title') {{ tool.title }}
-    button(action-trigger='remover', @click='remover(tool)') Remover
-    p(data-set='description') {{ tool.description }}
-    ul(data-set='tags')
-      li(v-for='tag in tool.tags') {{ tag }}
 </template>
 
 <script>
 import api from '@/services/api'
+import ToolLine from '@/components/Line'
 
 export default {
+	components: { ToolLine },
   methods: {
     nova () {
       this.ferramenta = {
