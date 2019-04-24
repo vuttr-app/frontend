@@ -7,6 +7,7 @@ jest.mock('@/services/api', () => {
 })
 
 import { mount, createLocalVue } from '@vue/test-utils'
+import flushPromises from 'flush-promises'
 
 import App from '@/App'
 import api from '@/services/api'
@@ -142,11 +143,13 @@ describe('App', async () => {
   })
 
   describe('remove', async () => {
+    let $confirm
+
     beforeEach(async () => {
       api.removeTool.mockImplementationOnce((id) => {
-        const result = {}
-        return Promise.resolve(result)
+        return Promise.resolve()
       })
+      $confirm = jest.fn().mockImplementationOnce(() => Promise.resolve())
     })
 
     it('não deve apresentar uma lista', async () => {
@@ -155,9 +158,12 @@ describe('App', async () => {
         return Promise.resolve(result)
       })
       const wrapper = await mount(App, {
+        mocks: { $confirm },
         localVue
       })
+      expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(1)
       await wrapper.find(`[action-trigger='remover']`).trigger('click')
+      await flushPromises()
       expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(0)
       expect(api.removeTool).toHaveBeenCalledWith(1)
     })
@@ -171,9 +177,12 @@ describe('App', async () => {
         return Promise.resolve(result)
       })
       const wrapper = await mount(App, {
+        mocks: { $confirm },
         localVue
       })
+      expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(2)
       await wrapper.find(`[action-trigger='remover']`).trigger('click')
+      await flushPromises()
       expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(1)
     })
   })

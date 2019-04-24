@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "bootstrap": "^3.4.1",
     "core-js": "^2.6.5",
+    "uiv": "^0.31.5",
     "vue": "^2.6.10"
   },
   "devDependencies": {
@@ -24,6 +26,7 @@
     "babel-jest": "^23.6.0",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "flush-promises": "^1.0.2",
     "pug": "^2.0.3",
     "pug-plain-loader": "^1.0.0",
     "vue-template-compiler": "^2.5.21"
