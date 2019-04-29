@@ -11,6 +11,7 @@ div
     :checked='tags',
     @click='toggleTags'
   )
+  button(action-trigger='nova', @click=`$emit('adicionar')`) Nova
   tool-line(
     v-for='tool of tools',
     :key='tool.index',
