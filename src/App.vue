@@ -2,11 +2,13 @@
 #app
   tool-form(
     v-if='aberto',
+    :aberto='aberto',
     :tool='ferramenta',
-    @confirmar='adicionar($event)'
+    @confirmar='adicionar($event)',
+    @cancelar='cancelar'
   )
   button(action-trigger='nova', @click='nova') Nova
-  tool-list(:ferramentas='ferramentas', @remover='remover($event)')
+  tool-list(:ferramentas='tools', @remover='remover($event)')
 </template>
 
 <script>
@@ -19,19 +21,22 @@ export default {
   methods: {
     nova () {
       this.ferramenta = {
-				link: '',
+        link: '',
         title: '',
-				marcadores: '',
-				description: ''
+        marcadores: '',
+        description: ''
       }
       this.aberto = true
     },
     remover (to) {
       api.removeTool(to.id)
-        .then(_ => {
+        .then(() => {
           this.ferramentas = this.ferramentas
             .filter(ferramenta => ferramenta.id !== to.id)
         })
+    },
+    cancelar () {
+      this.aberto = false
     },
     adicionar (ferramenta) {
       const tags = (ferramenta.marcadores || '').split(' ')
@@ -55,6 +60,13 @@ export default {
       aberto: false,
       ferramenta: {},
       ferramentas: []
+    }
+  },
+  computed: {
+    tools () {
+      return this.ferramentas.map((ferramenta, index) => {
+        return { ...ferramenta, index }
+      })
     }
   }
 }

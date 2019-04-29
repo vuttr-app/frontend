@@ -1,5 +1,10 @@
 <template lang='pug'>
-div(data-set='nova-ferramenta')
+modal(
+  v-model='open',
+  data-set='nova-ferramenta',
+  :footer='false',
+  @hide='cancelar'
+)
   input(
     data-input='title',
     :value='ferramenta.title',
@@ -25,14 +30,19 @@ div(data-set='nova-ferramenta')
 
 <script>
 export default {
-  props: ['tool'],
-  created () {
-    this.ferramenta = this.tool
+  props: {
+    tool: { type: Object, required: true },
+    aberto: { type: Boolean, default: false }
   },
   data () {
     return {
-      ferramenta: {}
+      ferramenta: {},
+      open: false
     }
+  },
+  created () {
+    this.ferramenta = this.tool
+    this.open = this.aberto
   },
   methods: {
     changeMarcadores (event) {
@@ -46,6 +56,9 @@ export default {
     },
     changeTitle (event) {
       this.ferramenta.title = event.target.value
+    },
+    cancelar () {
+      this.$emit('cancelar')
     },
     adicionar () {
       this.$emit('confirmar', this.ferramenta)
