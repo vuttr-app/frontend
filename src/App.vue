@@ -1,7 +1,7 @@
 <template lang='pug'>
 #app
   tool-form(
-    v-if='editando',
+    v-if='aberto',
     :tool='ferramenta',
     @confirmar='adicionar($event)'
   )
@@ -19,8 +19,12 @@ export default {
   methods: {
     nova () {
       this.ferramenta = {
-        title: ''
+				link: '',
+        title: '',
+				marcadores: '',
+				description: ''
       }
+      this.aberto = true
     },
     remover (to) {
       api.removeTool(to.id)
@@ -36,13 +40,8 @@ export default {
       api.createTool(tool)
         .then(response => {
           this.ferramentas = [ ...this.ferramentas, { ...response } ]
-          this.ferramenta = { empty: true }
+          this.aberto = false
         })
-    }
-  },
-  computed: {
-    editando () {
-      return !this.ferramenta.empty
     }
   },
   created () {
@@ -53,7 +52,8 @@ export default {
   },
   data () {
     return {
-      ferramenta: { empty: true },
+      aberto: false,
+      ferramenta: {},
       ferramentas: []
     }
   }
