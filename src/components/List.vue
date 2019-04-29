@@ -13,6 +13,7 @@ div
   )
   tool-line(
     v-for='tool of tools',
+    :key='tool.index',
     :tool='tool',
     @remover='remover(tool)',
     data-set='ferramenta'
@@ -52,12 +53,13 @@ export default {
   computed: {
     tools () {
       const re = new RegExp(this.criterio)
-      const result = this.ferramentas
-        .filter(ferramenta => {
+      const result = this.criterio && this.criterio.trim().length > 0
+        ? this.ferramentas.filter(ferramenta => {
           return !this.tags
             ? ferramenta.title.match(re) !== null
             : ferramenta.tags.some(tag => tag.match(re) !== null)
         })
+        : this.ferramentas
       return result
     }
   }

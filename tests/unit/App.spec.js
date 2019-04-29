@@ -8,11 +8,13 @@ jest.mock('@/services/api', () => {
 
 import { mount, createLocalVue } from '@vue/test-utils'
 import flushPromises from 'flush-promises'
+import * as uiv from 'uiv'
 
 import App from '@/App'
 import api from '@/services/api'
 
 let localVue
+
 describe('App', async () => {
   beforeEach(async () => {
     localVue = createLocalVue()
@@ -75,6 +77,7 @@ describe('App', async () => {
 
   describe('adiciona', async () => {
     beforeEach(async () => {
+      localVue.use(uiv)
       api.createTool.mockImplementationOnce((tool) => {
         const result = { ...tool, id: 1 }
         return Promise.resolve(result)
@@ -89,7 +92,9 @@ describe('App', async () => {
       const wrapper = await mount(App, {
         localVue
       })
+      expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(0)
       await wrapper.find(`[action-trigger='nova']`).trigger('click')
+      await flushPromises()
       const title = wrapper.find(`[data-input='title']`)
       title.element.value = 'Título'
       title.trigger('change')
@@ -103,6 +108,7 @@ describe('App', async () => {
       marcadores.element.value = 't1 t2'
       marcadores.trigger('change')
       await wrapper.find(`[action-trigger='adicionar']`).trigger('click')
+      await flushPromises()
       expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(1)
       expect(api.createTool).toHaveBeenCalledWith({
         link: 'http://li.nk',
@@ -120,8 +126,14 @@ describe('App', async () => {
       const wrapper = await mount(App, {
         localVue
       })
+      expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(1)
       await wrapper.find(`[action-trigger='nova']`).trigger('click')
+      await flushPromises()
+      const title = wrapper.find(`[data-input='title']`)
+      title.element.value = 'Título'
+      title.trigger('change')
       await wrapper.find(`[action-trigger='adicionar']`).trigger('click')
+      await flushPromises()
       expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(2)
     })
 
@@ -136,8 +148,14 @@ describe('App', async () => {
       const wrapper = await mount(App, {
         localVue
       })
+      expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(2)
       await wrapper.find(`[action-trigger='nova']`).trigger('click')
+      await flushPromises()
+      const title = wrapper.find(`[data-input='title']`)
+      title.element.value = 'Título'
+      title.trigger('change')
       await wrapper.find(`[action-trigger='adicionar']`).trigger('click')
+      await flushPromises()
       expect(await wrapper.findAll(`[data-set='ferramenta']`)).toHaveLength(3)
     })
   })
