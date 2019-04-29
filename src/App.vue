@@ -7,8 +7,7 @@
     @confirmar='adicionar($event)',
     @cancelar='cancelar'
   )
-  button(action-trigger='nova', @click='nova') Nova
-  tool-list(:ferramentas='tools', @remover='remover($event)')
+  tool-list(:ferramentas='tools', @remover='remover($event)', @adicionar='nova')
 </template>
 
 <script>
