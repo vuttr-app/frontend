@@ -1,6 +1,6 @@
 <template lang='pug'>
 div(data-set='ferramenta')
-  a(data-set='link', :href='tool.link')
+  span(data-set='link', :href='tool.link')
     h4(data-set='title') {{ tool.title }}
   button(action-trigger='remover', @click='remover(tool)') Remover
   p(data-set='description') {{ tool.description }}
