@@ -1,11 +1,18 @@
 <template lang='pug'>
-div(data-set='ferramenta')
-  a(data-set='link', :href='tool.link')
-    h4(data-set='title') {{ tool.title }}
-  button(action-trigger='remover', @click='remover(tool)') Remover
-  p(data-set='description') {{ tool.description }}
-  ul(data-set='tags')
-    li(v-for='tag in tool.tags') {{ tag }}
+.row(data-set='ferramenta'): .col-sm-10.col-sm-offset-1: .panel.panel-default
+  .row
+    .col-sm-10
+      a(data-set='link', :href='tool.link')
+        h4(data-set='title') {{ tool.title }}
+    .col-sm-2
+      button.pull-right(
+        action-trigger='remover',
+        @click='remover(tool)'
+      ) Remover
+  .row: .col-sm-12
+      p(data-set='description') {{ tool.description }}
+  .row: .col-sm-12(data-set='tags')
+      strong(v-for='tag in tool.tags') {{ `#${tag} ` }}
 </template>
 
 <script>

@@ -1,31 +1,43 @@
 <template lang='pug'>
 modal(
-  v-model='open',
   data-set='nova-ferramenta',
+  v-model='open',
+  title='+ Add new tool',
+  :dismiss-btn='false',
   :footer='false',
   @hide='cancelar'
 )
-  input(
-    data-input='title',
-    :value='ferramenta.title',
-    @change='changeTitle($event)'
-  )
-  input(
-    data-input='link',
-    :value='ferramenta.link',
-    @change='changeLink($event)'
-  )
-  input(
-    data-input='description',
-    :value='ferramenta.description',
-    @change='changeDescription($event)'
-  )
-  input(
-    data-input='marcadores',
-    :value='ferramenta.marcadores',
-    @change='changeMarcadores($event)'
-  )
-  button(action-trigger='adicionar', @click='adicionar') Adicionar
+  fieldset.form-group
+    label Tool Name
+    input.form-control(
+      data-input='title',
+      :value='ferramenta.title',
+      @change='changeTitle($event)'
+    )
+  fieldset.form-group
+    label Tool Link
+    input.form-control(
+      data-input='link',
+      :value='ferramenta.link',
+      @change='changeLink($event)'
+    )
+  fieldset.form-group
+    label Tool Description
+    textarea.form-control(
+      data-input='description',
+      rows='5',
+      :value='ferramenta.description',
+      @change='changeDescription($event)'
+    )
+  fieldset.form-group
+    label Tags
+    input.form-control(
+      data-input='marcadores',
+      :value='ferramenta.marcadores',
+      @change='changeMarcadores($event)'
+    )
+  fieldset.form-group
+    button.pull-right(action-trigger='adicionar', @click='adicionar') Adicionar
 </template>
 
 <script>

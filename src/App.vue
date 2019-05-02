@@ -1,5 +1,9 @@
 <template lang='pug'>
 #app
+  .jumbotron.text-center
+    h1 VUTTR
+    h3 Very Useful Tools to Remember
+  tool-list(:ferramentas='tools', @remover='remover($event)', @adicionar='nova')
   tool-form(
     v-if='aberto',
     :aberto='aberto',
@@ -7,7 +11,6 @@
     @confirmar='adicionar($event)',
     @cancelar='cancelar'
   )
-  tool-list(:ferramentas='tools', @remover='remover($event)', @adicionar='nova')
 </template>
 
 <script>

@@ -1,17 +1,27 @@
 <template lang='pug'>
-div
-  input(
-    data-input='criterio',
-    :value='criterio',
-    @keyup='changeCriterio($event)'
-  )
-  input(
-    type='checkbox',
-    data-input='tags',
-    :checked='tags',
-    @click='toggleTags'
-  )
-  button(action-trigger='nova', @click=`$emit('adicionar')`) Nova
+.container
+  .row: .col-sm-10.col-sm-offset-1: .row
+        .col-sm-9.form-inline
+          fieldset.input-group
+            input.form-control(
+              data-input='criterio',
+              :value='criterio',
+              @keyup='changeCriterio($event)'
+            )
+          fieldset.checkbox
+            label
+              input.form-control(
+                type='checkbox',
+                data-input='tags',
+                :checked='tags',
+                @click='toggleTags'
+              )
+              | search in tags only
+        fieldset.col-sm-3
+          button.btn.btn-default.pull-right(
+            action-trigger='nova',
+            @click=`$emit('adicionar')`
+          ) Nova
   tool-line(
     v-for='tool of tools',
     :key='tool.index',
@@ -41,14 +51,14 @@ export default {
       this.criterio = event.target.value
     },
     remover (to) {
-			this.$confirm({
-				title: 'Remover ferramenta',
-				content: 'Você tem certeza que deseja remover esta ferramenta?',
-				customClass: 'data-set-confirm'
-			})
-				.then(() => {
-					this.$emit('remover', to)
-				})
+      this.$confirm({
+        title: 'Remover ferramenta',
+        content: 'Você tem certeza que deseja remover esta ferramenta?',
+        customClass: 'data-set-confirm'
+      })
+        .then(() => {
+          this.$emit('remover', to)
+        })
     }
   },
   computed: {
