@@ -1,14 +1,17 @@
 <template lang='pug'>
-.container
+div
   .row: .col-sm-10.col-sm-offset-1: .row
-        .col-sm-9.form-inline
-          fieldset.input-group
-            input.form-control(
+        .col-sm-6.form-inline
+          .inner-addon.left-addon
+            i.glyphicon.glyphicon-search
+            input.form-control.criterio(
+              placeholder='search',
               data-input='criterio',
               :value='criterio',
               @keyup='changeCriterio($event)'
             )
-          fieldset.checkbox
+        .col-sm-4.form-inline
+          .checkbox
             label
               input.form-control(
                 type='checkbox',
@@ -17,11 +20,13 @@
                 @click='toggleTags'
               )
               | search in tags only
-        fieldset.col-sm-3
-          button.btn.btn-default.pull-right(
+        .col-sm-2
+          button.btn.btn-default.btn-md.pull-right(
             action-trigger='nova',
             @click=`$emit('adicionar')`
-          ) Nova
+          )
+            span.glyphicon.glyphicon-plus(aria-hidden='true')
+            |  Add
   tool-line(
     v-for='tool of tools',
     :key='tool.index',
@@ -52,8 +57,12 @@ export default {
     },
     remover (to) {
       this.$confirm({
-        title: 'Remover ferramenta',
-        content: 'Você tem certeza que deseja remover esta ferramenta?',
+        title: 'x Remove tool',
+        content: `Are you sure you want to remove <strong>${to.title}</strong>?`,
+        html: true,
+        size: 'lg',
+        okText: 'Yes, remove',
+        cancelText: 'Cancel',
         customClass: 'data-set-confirm'
       })
         .then(() => {

@@ -5,10 +5,12 @@
       span(data-set='link', :href='tool.link')
         h4(data-set='title') {{ tool.title }}
     .col-sm-2
-      button.pull-right(
+      button.btn.btn-default.btn-md.pull-right(
         action-trigger='remover',
         @click='remover(tool)'
-      ) Remover
+      )
+        span.glyphicon.glyphicon-remove(aria-hidden='true')
+        |  remove
   .row: .col-sm-12
       p(data-set='description') {{ tool.description }}
   .row: .col-sm-12(data-set='tags')
