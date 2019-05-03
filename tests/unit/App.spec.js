@@ -164,7 +164,7 @@ describe('App', async () => {
     let $confirm
 
     beforeEach(async () => {
-      api.removeTool.mockImplementationOnce((id) => {
+      api.removeTool.mockImplementationOnce(() => {
         return Promise.resolve()
       })
       $confirm = jest.fn().mockImplementationOnce(() => Promise.resolve())
