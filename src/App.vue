@@ -1,8 +1,8 @@
 <template lang='pug'>
-#app
-  .jumbotron.text-center
-    h1 VUTTR
-    h3 Very Useful Tools to Remember
+#app.container
+  .row: .col-sm-10.col-sm-offset-1
+      h1 VUTTR
+      h3 Very Useful Tools to Remember
   tool-list(:ferramentas='tools', @remover='remover($event)', @adicionar='nova')
   tool-form(
     v-if='aberto',

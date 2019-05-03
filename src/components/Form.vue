@@ -37,7 +37,7 @@ modal(
       @change='changeMarcadores($event)'
     )
   fieldset.form-group
-    button.pull-right(action-trigger='adicionar', @click='adicionar') Adicionar
+    button.pull-right(action-trigger='adicionar', @click='adicionar') Add tool
 </template>
 
 <script>
