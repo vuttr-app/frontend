@@ -1,10 +1,5 @@
-#!/bin/sh
-
+#!/bin/sh +x
 set -e
-
-export VUE_APP_API=https://vuttr-rest-api.herokuapp.com
-
-yarn dist
 
 SOURCE_BRANCH="master"
 
@@ -14,6 +9,8 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]
 fi
 
 cd dist
+
+sed -e "s|<title>VUTTR</title>|<title>VUTTR [$TRAVIS_BUILD_NUMBER]</title>|g" index.html > out && mv out index.html
 
 git init
 
