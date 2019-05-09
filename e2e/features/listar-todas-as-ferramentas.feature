@@ -5,7 +5,7 @@ Funcionalidade: Listar todas as ferramentas
       Dado que não existem ferramentas
     Quando eu solicito a lista de todas as ferramentas
      Então eu verifico que nenhuma ferramenta é apresentada
-
+  @doing
   Cenário: Existe uma ferramenta
       Dado que existe uma ferramenta
     Quando eu solicito a lista de todas as ferramentas

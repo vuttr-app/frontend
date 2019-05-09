@@ -52,7 +52,7 @@ services:
     ports:
     - 4200:4200
     - 4300:4300
-    entrypoint: /bin/sh -c 'npm install && /ws/app.sh && yarn serve; tail -f /ws/docker-compose.yml'
+    entrypoint: /bin/sh -c 'npm install && /ws/app.sh && yarn start; tail -f /ws/docker-compose.yml'
 
   hub:
     container_name: hub
@@ -64,13 +64,6 @@ services:
     networks:
       vuttr:
         ipv4_address: 172.21.1.4
-    healthcheck:
-      test: >-
-        /bin/bash -c
-        "echo -e \"GET / HTTP/1.1\n\n\" > /dev/tcp/localhost/4444 || exit 1"
-      interval: 10s
-      timeout: 1m30s
-      retries: 5
 
   firefox:
     container_name: firefox
@@ -85,13 +78,6 @@ services:
     networks:
       vuttr:
         ipv4_address: 172.21.1.5
-    healthcheck:
-      test: >-
-        /bin/bash -c
-        "echo -e \"GET / HTTP/1.1\n\n\" > /dev/tcp/localhost/5555 || exit 1"
-      interval: 10s
-      timeout: 1m30s
-      retries: 5
 
   chrome:
     container_name: chrome
@@ -106,10 +92,3 @@ services:
     networks:
       vuttr:
         ipv4_address: 172.21.1.6
-    healthcheck:
-      test: >-
-        /bin/bash -c
-        "echo -e \"GET / HTTP/1.1\n\n\" > /dev/tcp/localhost/5555 || exit 1"
-      interval: 10s
-      timeout: 1m30s
-      retries: 5
