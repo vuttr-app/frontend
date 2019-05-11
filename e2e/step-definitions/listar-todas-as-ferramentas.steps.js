@@ -7,7 +7,17 @@ let backend = new Backend('/ws/api/.db.json')
 let frontend = new Frontend(process.env.APP_URL)
 
 Given('que existe uma ferramenta', async () => {
-  backend.registrar({ tools: [ { id: 1, title: 'Ferramenta 1' } ] })
+  backend.registrar({
+    tools: [
+      {
+        id: 1,
+        title: 'Ferramenta 1',
+        link: 'Ferramenta 1',
+        description: 'Ferramenta 1',
+        tags: ['t1', 't2']
+      }
+    ]
+  })
 })
 
 When('eu solicito a lista de todas as ferramentas', async () => {

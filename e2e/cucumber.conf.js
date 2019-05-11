@@ -1,4 +1,4 @@
-import { setDefaultTimeout, After, AfterAll, BeforeAll } from 'cucumber'
+import { setDefaultTimeout, Before, After, AfterAll, BeforeAll } from 'cucumber'
 import { createSession, startWebDriver, stopWebDriver, client } from 'nightwatch-api'
 import config from './nightwatch.conf.js'
 import S from 'string'
@@ -9,6 +9,28 @@ setDefaultTimeout(60 * 1000)
 BeforeAll(async () => {
   await startWebDriver({ env: process.env.browser || 'firefox' })
   await createSession()
+})
+
+Before(async () => {
+  if (false) {
+    await client
+      .getLog('browser', result => {
+        console.error('$$$$$$$', result)
+        return client
+      })
+      .getLog('driver', result => {
+        console.error('%%%%%%%', result)
+        return client
+      })
+      .getLog('client', result => {
+        console.error('@@@@@@@', result)
+        return client
+      })
+      .getLog('server', result => {
+        console.error('!!!!!!!', result)
+        return client
+      })
+  }
 })
 
 After(async (context) => {

@@ -1,9 +1,10 @@
 {
   "scripts": {
+    "cleanup": "rm -frv .screenshots",
     "cucumber": "cucumber-js --require cucumber.conf.js --format node_modules/cucumber-pretty --require step-definitions --require-module babel-core/register",
     "test:chrome": "browser=chrome npm run cucumber",
     "test:firefox": "browser=firefox npm run cucumber",
-    "test": "npm run test:chrome && npm run test:firefox"
+    "test": "npm run cleanup && npm run test:chrome && npm run test:firefox"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
