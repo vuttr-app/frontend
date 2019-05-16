@@ -17,6 +17,16 @@ import flushPromises from 'flush-promises'
 
 describe(`<App />`, () => {
   describe(`lista`, () => {
+    it('não deve apresentar a lista', async () => {
+      api.getTools.mockImplementationOnce(() => {
+        const result = []
+        return Promise.resolve(result)
+      })
+      const wrapper = await mount(<App/>)
+      await wrapper.update()
+      expect(wrapper.find(`[data-set='ferramenta']`)).toHaveLength(0)
+    })
+
     it('deve apresentar uma lista de tamanho 1', async () => {
       api.getTools.mockImplementationOnce(() => {
         const result = [
@@ -30,7 +40,7 @@ describe(`<App />`, () => {
         return Promise.resolve(result)
       })
 
-      const wrapper = await mount(<App />)
+      const wrapper = await mount(<App/>)
       await wrapper.update()
       const ferramentas = wrapper.find(`[data-set='ferramenta']`)
       expect(ferramentas).toHaveLength(1)
@@ -43,6 +53,29 @@ describe(`<App />`, () => {
       const tags = ferramenta.find(`[data-set='tags']`)
       expect(tags.text()).toContain('t1')
       expect(tags.text()).toContain('t2')
+    })
+
+    it('deve apresentar uma lista de tamanho 2', async () => {
+      api.getTools.mockImplementationOnce(() => {
+        const result = [
+          {
+            title: 'Título',
+            link: 'http://fer.ra/me',
+            description: 'Descrição',
+            tags: ['t1', 't2']
+          },
+          {
+            title: 'Título',
+            link: 'http://fer.ra/me',
+            description: 'Descrição',
+            tags: ['t1', 't2']
+          }
+        ]
+        return Promise.resolve(result)
+      })
+      const wrapper = await mount(<App/>)
+      await wrapper.update()
+      expect(wrapper.find(`[data-set='ferramenta']`)).toHaveLength(2)
     })
   })
 })

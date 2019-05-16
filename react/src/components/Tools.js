@@ -3,8 +3,8 @@ import React from 'react'
 import Tool from '@/components/Tool'
 
 const Tools = (props) => {
-  const tools = props.tools.map(tool =>
-    <Tool tool={tool} key={tool.toString()}/>
+  const tools = props.tools.map((tool, index) =>
+    <Tool tool={tool} key={index}/>
   )
   return (
     <div>{tools}</div>
