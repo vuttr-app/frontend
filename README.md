@@ -1,43 +1,43 @@
 # VUTTR
 
-Uma aplicação frontend para gerenciamento de ferramentas conforme [descrito em](https://www.notion.so/Front-end-c12adcdbe7a1425dbfbcd5a397b4ff10).
+A front-end web application for tools management, like [described at](https://www.notion.so/Front-end-c12adcdbe7a1425dbfbcd5a397b4ff10).
 
-Criado com [vue-cli 3](https://cli.vuejs.org/).
+Created by [vue-cli 3](https://cli.vuejs.org/).
 
-A versão do vuejs utilizada pode ser observada no arquivo package.json do diretório app.
+The Vue.js version used can be watched at package.json file in app folder.
 
-Além do diretório a aplicação (`app`) em si possui mais 2 submódulos:
-1. `api`: incorpora os fontes [disponibilizados em](https://gitlab.com/bossabox/challenge-fake-api). Serve como backend da aplicação, uma vez que é critério de aceite do projeto. Assim sendo para atendê-lo o mesmo foi implantado em um ambiente na ferramenta [heroku](https://heroku.com), no [endereço](https://vuttr-rest-api.herokuapp.com/).
-2. `e2e`: como o nome sugere guarda configurações necessárias para rodar testes de ponta-a-ponta para a aplicação em desenvolvimento. Utiliza [CucumberJS](https://cucumber.io/) e [Nightwatch-API](https://nightwatch-api.netlify.com/).
+Beyond app folder, there are 2 (two) submodules:
+1. `api`: embeds the source [available at](https://gitlab.com/bossabox/challenge-fake-api). It servers as application backend since it is a acceptance criteria. Therefore, it was deployed in an environment mounted on [heroku](https://heroku.com) [at](https://vuttr-rest-api.herokuapp.com/).
+2. `e2e`: As the name suggests, it saves settings needed to run end-to-end tests for the application. It uses [CucumberJS](https://cucumber.io/) e [Nightwatch-API](https://nightwatch-api.netlify.com/).
 
-## Desenvolvimento
+## Development
 
-É necessário ter o [docker-compose](https://docs.docker.com/compose/) com suporte a versão `3.4` do arquivo de [configuração](https://docs.docker.com/compose/compose-file/).
+It is need to have [docker-compose](https://docs.docker.com/compose/), version `1.17.0+`, that supports `3.4` [version configuration file](https://docs.docker.com/compose/compose-file/).
 
-### Iniciar ambiente
+### Up the environment
 ```bash
 docker-compose -f dev.yml up -d
 ```
-### Rodar testes unitários em modo watch
+### Running unit tests in watch mode
 ```
 docker-compose -f dev.yml exec app /bin/sh -c 'yarn test:unit --watchAll'
 ```
-### Rodar testes de ponta-a-ponta (firefox)
+### Running e2e tests (firefox)
 ```
 docker-compose -f dev.yml exec e2e /bin/sh -c 'npm run cucumber'
 ```
-### Rodar testes de ponta-a-ponta (chrome)
+### Running e2e tests (chrome)
 ```
 docker-compose -f dev.yml exec e2e /bin/sh -c 'browser=chrome npm run cucumber'
 ```
-### Acessar applicação via navegador
+### Accessing app by browser
 
-Caso deseje utilizar a aplicação enquando desenvolve (para fazer algum ajuste visual, por exemplo), acesse o endereço `http://localhost:4300`.
+If you want to use the application while developing (for some visual adjustment, for example), access [http://localhost:4300](http//localhost:4300).
 
-### Reinicializar a base da api
+### Restarting api database
 
-Caso deseje utilizar uma massa de dados diferente basta substituir/criar o arquivo `api/.db.json` naquele diretório. Lá também é possível encontrar o arquivo original `api/db.json`.
+If you want to use a different data mass, it is just create/replace `api/.db.json` file. There is a sample original file, `api/db.json`.
 
-## Implantação
+## Deploying
 
-Uma vez finalizada a demanda no devido branch criado para tanto, basta realizar o merge do mesmo para o master e realizar o push para o repositório remoto. Essa ação irá disparar uma nova build no travisci, que se passar no crivo dos testes de lint, unitários e e2e publicará a nova versão no endereço (https://vuttr-app.github.io/). Pode-se confirmar que a nova versão foi publicada ao observar que o número da build do travisci consta do title da página publicada.
+Once the demand is finished, in the appropriate branch, just merge it into the master branch and push it to the remote repository. That action will trigger a new build on [travisci. That action will trigger a new build at [Travis-CI](https://travis-ci.org/vuttr-app/frontend), submitting the code to `lint tests`, `unit tests` and `e2e tests` and, on success, it will publish the new version [on](https://vuttr-app.github.io/). It is possible to confirm that new version was published watching the Travis-CI build number in the title of the main page.
