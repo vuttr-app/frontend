@@ -1,17 +1,14 @@
 # language: pt
 Funcionalidade: Listar todas as ferramentas
 
-  Cenário: Não existem ferramentas
-      Dado que não existem ferramentas
+  Esquema do Cenário: Listar todas as ferramentas
+      Dado que <ferramentas-existentes>
     Quando eu solicito a lista de todas as ferramentas
-     Então eu verifico que nenhuma ferramenta é apresentada
+     Então eu verifico que <ferramentas-apresentadas>
 
-  Cenário: Existe uma ferramenta
-      Dado que existe uma ferramenta
-    Quando eu solicito a lista de todas as ferramentas
-     Então eu verifico que a lista apresentada possui uma ferramenta
+  Exemplos:
+  | ferramentas-existentes         | ferramentas-apresentadas                  |
+  | não existem ferramentas        | nenhuma ferramenta é apresentada          |
+  | existe uma ferramenta          | a lista apresentada possui uma ferramenta |
+  | existe mais que uma ferramenta | mais que uma ferramenta são apresentadas  |
 
-  Cenário: Existe mais que uma ferramenta
-      Dado que existe mais que uma ferramenta
-    Quando eu solicito a lista de todas as ferramentas
-     Então eu verifico que mais que uma ferramenta são apresentadas
