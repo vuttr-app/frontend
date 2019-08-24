@@ -23,6 +23,8 @@ services:
       HOST: 0.0.0.0
     ports:
     - 4000:4000
+    - 4010:4010
+    - 4020:4020
 
   e2e:
     container_name: e2e
@@ -55,6 +57,8 @@ services:
     ports:
     - 4200:4200
     - 4300:4300
+    - 4400:4400
+    - 4500:4500
     entrypoint: /bin/sh -c 'npm install && /ws/app.sh && yarn serve; tail -f'
 
   hub:
