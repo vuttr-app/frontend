@@ -6,8 +6,19 @@ export default class Frontend {
     this.browser = client
   }
 
-  async entrar () {
+  async entrar (delay = 10000) {
     await this.browser.url(this.url)
+      .pause(delay)
+  }
+
+  async titulo (delay = 5000) {
+    let result
+    await this.browser
+      .pause(delay)
+      .getTitle((value) => {
+        result = value
+      })
+    return result
   }
 
   async adicionar () {

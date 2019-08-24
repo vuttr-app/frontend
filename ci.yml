@@ -1,0 +1,67 @@
+version: '3.4'
+
+networks:
+  vuttr:
+    ipam:
+      config:
+      - subnet: 172.72.72.0/24
+
+services:
+  ci:
+    container_name: ci
+    networks:
+      vuttr:
+        ipv4_address: 172.72.72.2
+    volumes:
+    - ./:/ws
+    image: node:8.16.0-alpine
+    working_dir: /ws
+    entrypoint: /bin/sh -c './build.sh && touch dist.ok'
+    ports:
+    - 4000:4000
+    - 4200:4200
+    environment:
+    - APP_URL=http://172.72.72.2:4200
+    - VUE_APP_API=http://172.72.72.2:4000
+    - HOST=0.0.0.0
+    - PORT=4200
+    - TZ=BRT3BRST,M11.1.6/23:59:59,M2.3.6/23:59:59
+
+  hub:
+    container_name: hub
+    image: selenium/hub:2.53.1-beryllium
+    environment:
+    - TZ=BRT3BRST,M11.1.6/23:59:59,M2.3.6/23:59:59
+    ports:
+     - 4444:4444
+    networks:
+      vuttr:
+        ipv4_address: 172.72.72.3
+
+  firefox:
+    container_name: firefox
+    image: selenium/node-firefox:2.53.1-beryllium
+    environment:
+    - HUB_PORT_4444_TCP_ADDR=hub
+    - TZ=BRT3BRST,M11.1.6/23:59:59,M2.3.6/23:59:59
+    ports:
+    - 9000
+    depends_on:
+    - ci
+    networks:
+      vuttr:
+        ipv4_address: 172.72.72.4
+
+  chrome:
+    container_name: chrome
+    image: selenium/node-chrome:2.53.1-beryllium
+    ports:
+    - 9000
+    environment:
+    - HUB_PORT_4444_TCP_ADDR=hub
+    - TZ=BRT3BRST,M11.1.6/23:59:59,M2.3.6/23:59:59
+    depends_on:
+    - ci
+    networks:
+      vuttr:
+        ipv4_address: 172.72.72.5

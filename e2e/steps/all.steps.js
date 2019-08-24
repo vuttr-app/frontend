@@ -7,11 +7,22 @@ let backend = new Backend('/ws/api/.db.json')
 let frontend = new Frontend(process.env.APP_URL)
 
 Given('that there is one tool', async () => {
-  backend.registrar({ tools: [ { id: 1, title: 'Ferramenta 1' } ] })
+  await backend.registrar({
+    tools: [
+      {
+        id: 1,
+        title: 'Ferramenta 1',
+        link: 'http://fer.ra/me',
+        description: 'Descrição',
+        tags: ['t1', 't2']
+      }
+    ]
+  })
 })
 
 When('i request a list of all tools', async () => {
-  await frontend.entrar()
+  await frontend.entrar(1)
+  expect(await frontend.titulo()).to.be.contains('VUTTR')
 })
 
 Then('i verify that one tool is presented', async () => {

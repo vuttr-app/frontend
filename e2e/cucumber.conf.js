@@ -6,8 +6,10 @@ import fs from 'fs'
 
 setDefaultTimeout(60 * 1000)
 
+const browser = process.env.browser || 'firefox'
+
 BeforeAll(async () => {
-  await startWebDriver({ env: process.env.browser || 'firefox' })
+  await startWebDriver({ env: browser })
   await createSession()
 })
 
@@ -17,7 +19,7 @@ After(async (context) => {
   const feature = context
     .sourceLocation.uri.replace(/^features\//, '').replace(/\.feature$/, '')
   const scenario = S(context.pickle.name).slugify().s
-  const filename = `${screenshots}/${status}/${feature}/${scenario}`
+  const filename = `${screenshots}/${browser}/${status}/${feature}/${scenario}`
   await client.saveScreenshot(`${filename}.png`)
   await client.source((result) => {
     fs.writeFile(`${filename}.html`, result.value, (error) => {

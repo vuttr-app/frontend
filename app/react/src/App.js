@@ -24,6 +24,8 @@ class App extends React.Component {
   render () {
     return (
       <div className='App'>
+        <h1>VUTTR</h1>
+        <h3>Very Useful Tools to Remember</h3>
         <Tools tools={this.state.tools}/>
       </div>
     )
