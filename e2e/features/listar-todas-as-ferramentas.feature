@@ -1,12 +1,11 @@
-# language: pt
-Funcionalidade: Listar todas as ferramentas
+Feature: List all tools
 
-  Esquema do Cenário: Listar todas as ferramentas
-      Dado que <ferramentas-existentes>
-    Quando eu solicito a lista de todas as ferramentas
-     Então eu verifico que <ferramentas-apresentadas>
+  Scenario Outline: List all tools
+    Given que <ferramentas-existentes>
+     When eu solicito a lista de todas as ferramentas
+     Then eu verifico que <ferramentas-apresentadas>
 
-  Exemplos:
+  Examples:
   | ferramentas-existentes         | ferramentas-apresentadas                  |
   | não existem ferramentas        | nenhuma ferramenta é apresentada          |
   | existe uma ferramenta          | a lista apresentada possui uma ferramenta |
