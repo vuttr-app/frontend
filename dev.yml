@@ -59,7 +59,7 @@ services:
     - 4300:4300
     - 4400:4400
     - 4500:4500
-    entrypoint: /bin/sh -c 'npm install && /ws/app.sh && yarn serve; tail -f'
+    entrypoint: /bin/sh -c '/ws/app.sh; tail -f'
 
   hub:
     container_name: hub
