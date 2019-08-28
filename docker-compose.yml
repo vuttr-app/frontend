@@ -63,40 +63,48 @@ services:
 
   hub:
     container_name: hub
-    image: selenium/hub:2.53.1-beryllium
-    environment:
-      TZ: BRT3BRST,M11.1.6/23:59:59,M2.3.6/23:59:59
-    ports:
-     - 4444:4444
+    image: selenium/hub:3.141.59-titanium
     networks:
       vuttr:
         ipv4_address: 172.11.1.5
+    ports:
+     - 4444:4444
+    environment:
+      TZ: BRT3BRST,M11.1.6/23:59:59,M2.3.6/23:59:59
 
   firefox:
     container_name: firefox
-    image: selenium/node-firefox:2.53.1-beryllium
-    environment:
-      HUB_PORT_4444_TCP_ADDR: hub
-      TZ: BRT3BRST,M11.1.6/23:59:59,M2.3.6/23:59:59
-    ports:
-    - 9000
-    depends_on:
-    - app
     networks:
       vuttr:
         ipv4_address: 172.11.1.6
-
-  chrome:
-    container_name: chrome
-    image: selenium/node-chrome:2.53.1-beryllium
+    image: selenium/node-firefox:3.141.59-titanium
     ports:
     - 9000
+    volumes:
+    - /dev/shm:/dev/shm
     environment:
-      HUB_PORT_4444_TCP_ADDR: hub
+      HUB_HOST: hub
+      HUB_PORT: 4444
       TZ: BRT3BRST,M11.1.6/23:59:59,M2.3.6/23:59:59
     depends_on:
     - app
+    - hub
+
+  chrome:
+    container_name: chrome
     networks:
       vuttr:
         ipv4_address: 172.11.1.7
+    image: selenium/node-chrome:3.141.59-titanium
+    ports:
+    - 9000
+    volumes:
+    - /dev/shm:/dev/shm
+    environment:
+      HUB_HOST: hub
+      HUB_PORT: 4444
+      TZ: BRT3BRST,M11.1.6/23:59:59,M2.3.6/23:59:59
+    depends_on:
+    - app
+    - hub
 
