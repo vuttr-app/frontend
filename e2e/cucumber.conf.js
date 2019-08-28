@@ -1,5 +1,5 @@
 import { setDefaultTimeout, After, AfterAll, BeforeAll } from 'cucumber'
-import { createSession, startWebDriver, stopWebDriver, client } from 'nightwatch-api'
+import { createSession, startWebDriver, closeSession, stopWebDriver, client } from 'nightwatch-api'
 import config from './nightwatch.conf.js'
 import S from 'string'
 import fs from 'fs'
@@ -32,5 +32,6 @@ After(async (context) => {
 })
 
 AfterAll(async () => {
+  await closeSession()
   await stopWebDriver()
 })
