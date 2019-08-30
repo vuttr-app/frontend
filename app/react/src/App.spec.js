@@ -16,8 +16,8 @@ import { mount } from 'enzyme'
 import flushPromises from 'flush-promises'
 
 describe(`<App />`, () => {
-  describe(`lista`, () => {
-    it('não deve apresentar a lista', async () => {
+  describe(`list`, () => {
+    it('should not be presented', async () => {
       api.getTools.mockImplementationOnce(() => {
         const result = []
         return Promise.resolve(result)
@@ -27,7 +27,7 @@ describe(`<App />`, () => {
       expect(wrapper.find(`[data-set='ferramenta']`)).toHaveLength(0)
     })
 
-    it('deve apresentar uma lista de tamanho 1', async () => {
+    it('should be presented with one size', async () => {
       api.getTools.mockImplementationOnce(() => {
         const result = [
           {
@@ -55,7 +55,7 @@ describe(`<App />`, () => {
       expect(tags.text()).toContain('t2')
     })
 
-    it('deve apresentar uma lista de tamanho 2', async () => {
+    it('should be presented with two size', async () => {
       api.getTools.mockImplementationOnce(() => {
         const result = [
           {
@@ -76,6 +76,53 @@ describe(`<App />`, () => {
       const wrapper = await mount(<App/>)
       await wrapper.update()
       expect(wrapper.find(`[data-set='ferramenta']`)).toHaveLength(2)
+    })
+  })
+
+  describe(`search`, () => {
+    let wrapper
+
+    beforeEach(async () => {
+      api.getTools.mockImplementationOnce(() => {
+        const result = [
+          { id: 1, title: 'Título da Ferramenta 1', tags: ['a'] },
+          { id: 2, title: 'Título da Ferramenta 2', tags: ['a', 'b', 'c'] },
+          { id: 3, title: 'Título da Ferramenta 3', tags: ['a', 'c'] }
+        ]
+        return Promise.resolve(result)
+      })
+      wrapper = await mount(<App/>)
+      await wrapper.update()
+      expect(await wrapper.find(`[data-set='ferramenta']`)).toHaveLength(3)
+    })
+
+    it('globally', async () => {
+      const input = await wrapper.find(`[data-input='criterio']`).first()
+      input.simulate('keyup', { target: { value: 'Ferramenta 2' }})
+      expect(await wrapper.find(`[data-set='ferramenta']`)).toHaveLength(1)
+    })
+
+    describe('by tag', () => {
+      const assertTo = async (criterio, length) => {
+        const tags = await wrapper.find(`[data-input='tags']`).first()
+        tags.simulate('click')
+        const input = await wrapper.find(`[data-input='criterio']`).first()
+        input.simulate('keyup', { target: { value: criterio }})
+        expect(await wrapper.find(`[data-set='ferramenta']`))
+          .toHaveLength(length)
+      }
+
+      it('should be presented one size', () => {
+        assertTo('b', 1)
+      })
+
+      it('should be presented two size', () => {
+        assertTo('c', 2)
+      })
+
+      it('should be presented three size', () => {
+        assertTo('a', 3)
+      })
     })
   })
 })
