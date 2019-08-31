@@ -125,4 +125,50 @@ describe(`<App />`, () => {
       })
     })
   })
+
+  describe(`add`, () => {
+    let wrapper
+
+    beforeEach(async () => {
+      api.createTool.mockImplementationOnce((tool) => {
+        const result = { ...tool, id: 1 }
+        return Promise.resolve(result)
+      })
+    })
+
+    it(`should be presented one size from empty`, async() => {
+      api.getTools.mockImplementationOnce(() => {
+        const result = []
+        return Promise.resolve(result)
+      })
+      wrapper = await mount(<App/>)
+      await wrapper.update()
+      expect(await wrapper.find(`[data-set='ferramenta']`)).toHaveLength(0)
+
+      await wrapper.find(`[action-trigger='nova']`).first().simulate('click')
+      await flushPromises()
+
+      wrapper.find(`[data-input='title']`).first()
+        .simulate('keyup', { target: { value: 'Título' } })
+      wrapper.find(`[data-input='link']`).first()
+        .simulate('keyup', { target: { value: 'http://li.nk' } })
+      wrapper.find(`[data-input='description']`).first()
+        .simulate('keyup', { target: { value: 'Descrição' } })
+      wrapper.find(`[data-input='marcadores']`).first()
+        .simulate('keyup', { target: { value: 't1 t2' } })
+      await wrapper.find(`[action-trigger='adicionar']`).first()
+        .simulate('click')
+
+      await flushPromises()
+      await wrapper.update()
+      expect(await wrapper.find(`[data-set='ferramenta']`)).toHaveLength(1)
+
+      expect(api.createTool).toHaveBeenCalledWith({
+        link: 'http://li.nk',
+        description: 'Descrição',
+        tags: ['t1', 't2'],
+        title: 'Título'
+      })
+    })
+  })
 })

@@ -1,18 +1,18 @@
 import React from 'react'
 
 import '@/App.css'
-
 import api from '@/services/api'
-
 import Tools from '@/components/Tools'
+import Form from '@/components/Form'
 
-class App extends React.Component {
+export default class App extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       tools: [],
       criterio: '',
-      tags: false
+      tags: false,
+      show: false
     }
   }
 
@@ -23,17 +23,29 @@ class App extends React.Component {
       })
   }
 
-  onKeyUpHandler(e) {
-    this.setState({
-      criterio: e.target.value
-    })
+  onCriterioKeyUp = (e) => {
+    this.setState({ criterio: e.target.value })
   }
 
-  onClickHandler(e) {
-    const newValue = !this.state.tags
-    this.setState({
-      tags: newValue
-    })
+  onTagsClick = () => {
+    const tags = !this.state.tags
+    this.setState({ tags })
+  }
+
+  onNovaClick = () => {
+    this.setState({ show: true })
+  }
+
+  onAdicionar = (e) => {
+    const tags = (e.marcadores || '').split(' ')
+    const tool = { ...e, tags }
+    delete tool.marcadores
+    api.createTool(tool)
+      .then(tool => {
+        const before = this.state.tools
+        const after = [ ...before, tool ]
+        this.setState({ tools: after, show: false })
+      })
   }
 
   render () {
@@ -45,6 +57,7 @@ class App extends React.Component {
           (!tags && tool.title.includes(criterio)) ||
           (tags && tool.tags.some((tag) => tag.includes(criterio)))
       })
+    const show = this.state.show
     return (
       <div className='App'>
         <h1>VUTTR</h1>
@@ -52,17 +65,21 @@ class App extends React.Component {
         <input
           type='text'
           data-input='criterio'
-          onKeyUp={this.onKeyUpHandler.bind(this)}
+          onKeyUp={this.onCriterioKeyUp}
         />
         <input
           type='checkbox'
           data-input='tags'
-          onClick={this.onClickHandler.bind(this)}
+          onClick={this.onTagsClick}
         />
+        <button
+          action-trigger='nova'
+          onClick={this.onNovaClick}
+        >Add</button>
         <Tools tools={tools}/>
+        <Form show={show} onAdicionar={this.onAdicionar}/>
       </div>
     )
   }
 }
 
-export default App
