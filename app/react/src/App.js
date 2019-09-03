@@ -48,6 +48,15 @@ export default class App extends React.Component {
       })
   }
 
+  onRemover = (tool) => {
+    api.removeTool(tool.id)
+      .then(() => {
+        const before = this.state.tools
+        const after = before.filter(t => t.id !== tool.id)
+        this.setState({ tools: after })
+      })
+  }
+
   render () {
     const criterio = this.state.criterio.trim()
     const tags = this.state.tags
@@ -76,7 +85,7 @@ export default class App extends React.Component {
           action-trigger='nova'
           onClick={this.onNovaClick}
         >Add</button>
-        <Tools tools={tools}/>
+        <Tools tools={tools} onRemover={this.onRemover}/>
         <Form show={show} onAdicionar={this.onAdicionar}/>
       </div>
     )

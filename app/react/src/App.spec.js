@@ -171,4 +171,34 @@ describe(`<App />`, () => {
       })
     })
   })
+
+  describe(`remove`, () => {
+    let wrapper
+    let $confirm
+
+    beforeEach(async () => {
+      api.removeTool.mockImplementationOnce(() => {
+        return Promise.resolve()
+      })
+      $confirm = jest.fn().mockImplementationOnce(() => Promise.resolve())
+    })
+
+    it(`should be presented empty from one size`, async() => {
+      api.getTools.mockImplementationOnce(() => {
+        const result = [
+          { id: 1, title: 'Título da Ferramenta 1', tags: ['a'] }
+        ]
+        return Promise.resolve(result)
+      })
+      wrapper = await mount(<App/>)
+      await wrapper.update()
+      expect(await wrapper.find(`[data-set='ferramenta']`)).toHaveLength(1)
+      await wrapper.find(`[action-trigger='remover']`).first()
+        .simulate('click')
+      await flushPromises()
+      await wrapper.update()
+      expect(await wrapper.find(`[data-set='ferramenta']`)).toHaveLength(0)
+      expect(api.removeTool).toHaveBeenCalledWith(1)
+    })
+  })
 })
