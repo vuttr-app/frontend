@@ -10,8 +10,6 @@ export default class App extends React.Component {
     super(props)
     this.state = {
       tools: [],
-      criterio: '',
-      tags: false,
       show: false
     }
   }
@@ -21,15 +19,6 @@ export default class App extends React.Component {
       .then(tools => {
         this.setState({ tools })
       })
-  }
-
-  onCriterioKeyUp = (e) => {
-    this.setState({ criterio: e.target.value })
-  }
-
-  onTagsClick = () => {
-    const tags = !this.state.tags
-    this.setState({ tags })
   }
 
   onNovaClick = () => {
@@ -58,33 +47,12 @@ export default class App extends React.Component {
   }
 
   render () {
-    const criterio = this.state.criterio.trim()
-    const tags = this.state.tags
-    const tools = this.state.tools
-      .filter(tool => {
-        return criterio === '' ||
-          (!tags && tool.title.includes(criterio)) ||
-          (tags && tool.tags.some((tag) => tag.includes(criterio)))
-      })
-    const show = this.state.show
+    const { show, tools } = this.state
     return (
       <div className='App'>
         <h1>VUTTR</h1>
         <h3>Very Useful Tools to Remember</h3>
-        <input
-          type='text'
-          data-input='criterio'
-          onKeyUp={this.onCriterioKeyUp}
-        />
-        <input
-          type='checkbox'
-          data-input='tags'
-          onClick={this.onTagsClick}
-        />
-        <button
-          action-trigger='nova'
-          onClick={this.onNovaClick}
-        >Add</button>
+        <button action-trigger='nova' onClick={this.onNovaClick}>Add</button>
         <Tools tools={tools} onRemover={this.onRemover}/>
         <Form show={show} onAdicionar={this.onAdicionar}/>
       </div>
