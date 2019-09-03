@@ -24,6 +24,10 @@ export default class Tools extends React.Component {
     this.setState({ tags })
   }
 
+  onAddClick = () => {
+    this.props.onAdd()
+  }
+
   render () {
     const criterio = this.state.criterio.trim()
     const tags = this.state.tags
@@ -48,6 +52,7 @@ export default class Tools extends React.Component {
           data-input='tags'
           onClick={this.onTagsClick}
         />
+        <button action-trigger='nova' onClick={this.onAddClick}>Add</button>
         {tools}
       </div>
     )

@@ -21,10 +21,6 @@ export default class App extends React.Component {
       })
   }
 
-  onNovaClick = () => {
-    this.setState({ show: true })
-  }
-
   onAdicionar = (e) => {
     const tags = (e.marcadores || '').split(' ')
     const tool = { ...e, tags }
@@ -46,14 +42,21 @@ export default class App extends React.Component {
       })
   }
 
+  onAdd = () => {
+    this.setState({ show: true })
+  }
+
   render () {
     const { show, tools } = this.state
     return (
       <div className='App'>
         <h1>VUTTR</h1>
         <h3>Very Useful Tools to Remember</h3>
-        <button action-trigger='nova' onClick={this.onNovaClick}>Add</button>
-        <Tools tools={tools} onRemover={this.onRemover}/>
+        <Tools
+          tools={tools}
+          onRemover={this.onRemover}
+          onAdd={this.onAdd}
+        />
         <Form show={show} onAdicionar={this.onAdicionar}/>
       </div>
     )
