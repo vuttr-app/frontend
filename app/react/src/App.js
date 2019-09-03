@@ -21,7 +21,7 @@ export default class App extends React.Component {
       })
   }
 
-  onAdicionar = (e) => {
+  onFormConfirm = (e) => {
     const tags = (e.marcadores || '').split(' ')
     const tool = { ...e, tags }
     delete tool.marcadores
@@ -33,7 +33,7 @@ export default class App extends React.Component {
       })
   }
 
-  onRemover = (tool) => {
+  onToolRemove = (tool) => {
     api.removeTool(tool.id)
       .then(() => {
         const before = this.state.tools
@@ -42,7 +42,7 @@ export default class App extends React.Component {
       })
   }
 
-  onAdd = () => {
+  onToolAdd = () => {
     this.setState({ show: true })
   }
 
@@ -54,10 +54,10 @@ export default class App extends React.Component {
         <h3>Very Useful Tools to Remember</h3>
         <Tools
           tools={tools}
-          onRemover={this.onRemover}
-          onAdd={this.onAdd}
+          onRemove={this.onToolRemove}
+          onAdd={this.onToolAdd}
         />
-        <Form show={show} onAdicionar={this.onAdicionar}/>
+        <Form show={show} onConfirm={this.onFormConfirm}/>
       </div>
     )
   }

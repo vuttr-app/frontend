@@ -3,7 +3,7 @@ import React from 'react'
 import Tool from '@/components/Tool'
 
 export default class Tools extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       criterio: '',
@@ -11,8 +11,8 @@ export default class Tools extends React.Component {
     }
   }
 
-  onRemover = (e) => {
-    this.props.onRemover(e)
+  onToolRemove = (e) => {
+    this.props.onRemove(e)
   }
 
   onCriterioKeyUp = (e) => {
@@ -38,7 +38,7 @@ export default class Tools extends React.Component {
           (tags && tool.tags.some((tag) => tag.includes(criterio)))
       })
       .map((tool, index) =>
-        <Tool tool={tool} key={index} onRemover={this.onRemover}/>
+        <Tool tool={tool} key={index} onRemove={this.onToolRemove}/>
       )
     return (
       <div>

@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default class Form extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       tool: {
@@ -13,36 +13,30 @@ export default class Form extends React.Component {
     }
   }
 
-  onTitleKeyUp = (e) => {
-    const before = this.state.tool
-    const title = e.target.value
-    const tool = { ...before, title }
+  attrKeyUp = (key, e) => {
+    const tool = { ...this.state.tool }
+    tool[key] = e.target.value
     this.setState({ tool })
+  }
+
+  onTitleKeyUp = (e) => {
+    this.attrKeyUp('title', e)
   }
 
   onLinkKeyUp = (e) => {
-    const before = this.state.tool
-    const link = e.target.value
-    const tool = { ...before, link }
-    this.setState({ tool })
+    this.attrKeyUp('link', e)
   }
 
   onDescriptionKeyUp = (e) => {
-    const before = this.state.tool
-    const description = e.target.value
-    const tool = { ...before, description }
-    this.setState({ tool })
+    this.attrKeyUp('description', e)
   }
 
   onMarcadoresKeyUp = (e) => {
-    const before = this.state.tool
-    const marcadores = e.target.value
-    const tool = { ...before, marcadores }
-    this.setState({ tool })
+    this.attrKeyUp('marcadores', e)
   }
 
-  onAdicionarClick = () => {
-    this.props.onAdicionar(this.state.tool)
+  onConfirmClick = () => {
+    this.props.onConfirm(this.state.tool)
   }
 
   render () {
@@ -71,7 +65,7 @@ export default class Form extends React.Component {
         />
         <button
           action-trigger='adicionar'
-          onClick={this.onAdicionarClick}
+          onClick={this.onConfirmClick}
         >Add</button>
       </div>
     )
