@@ -1,6 +1,7 @@
 import React from 'react'
 
 import '@/App.css'
+import Confirm from '@/services/Confirm'
 import api from '@/services/api'
 import Tools from '@/components/Tools'
 import Form from '@/components/Form'
@@ -34,11 +35,21 @@ export default class App extends React.Component {
   }
 
   onToolRemove = (tool) => {
-    api.removeTool(tool.id)
+    Confirm.show({
+      title: 'Remove Tool',
+      body: 'Are you sure remove tool?',
+      okText: 'Yes, remove'
+    })
       .then(() => {
-        const before = this.state.tools
-        const after = before.filter(t => t.id !== tool.id)
-        this.setState({ tools: after })
+        api.removeTool(tool.id)
+          .then(() => {
+            const before = this.state.tools
+            const after = before.filter(t => t.id !== tool.id)
+            this.setState({ tools: after })
+          })
+      })
+      .catch(errors => {
+        console.log('Remotion canceled.')
       })
   }
 

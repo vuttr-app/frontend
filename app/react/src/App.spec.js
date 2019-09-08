@@ -5,11 +5,17 @@ jest.mock('@/services/api', () => {
     getTools: jest.fn()
   }
 })
+jest.mock('@/services/Confirm', () => {
+  return {
+    show: jest.fn()
+  }
+})
 
 import React from 'react'
 
 import App from '@/App'
 import api from '@/services/api'
+import Confirm from '@/services/Confirm'
 
 import { mount } from 'enzyme'
 import flushPromises from 'flush-promises'
@@ -173,31 +179,40 @@ describe(`<App />`, () => {
 
   describe(`remove`, () => {
     let wrapper
-    let $confirm
 
     beforeEach(async () => {
-      api.removeTool.mockImplementationOnce(() => {
-        return Promise.resolve()
-      })
-      $confirm = jest.fn().mockImplementationOnce(() => Promise.resolve())
-    })
-
-    it(`should be presented empty from one size`, async() => {
       api.getTools.mockImplementationOnce(() => {
         const result = [
           { id: 1, title: 'Título da Ferramenta 1', tags: ['a'] }
         ]
         return Promise.resolve(result)
       })
+      api.removeTool.mockImplementationOnce(() => {
+        return Promise.resolve()
+      })
       wrapper = await mount(<App/>)
       await wrapper.update()
       expect(await wrapper.find(`[data-set='ferramenta']`)).toHaveLength(1)
+    })
+
+    it(`should be presented empty from one size after confirm`, async() => {
+      Confirm.show = jest.fn().mockImplementationOnce(() => Promise.resolve())
       await wrapper.find(`[action-trigger='remover']`).first()
         .simulate('click')
       await flushPromises()
       await wrapper.update()
       expect(await wrapper.find(`[data-set='ferramenta']`)).toHaveLength(0)
       expect(api.removeTool).toHaveBeenCalledWith(1)
+    })
+
+    it(`should be presented one from one size after cancel`, async() => {
+      Confirm.show = jest.fn()
+        .mockImplementationOnce(() => Promise.reject())
+      await wrapper.find(`[action-trigger='remover']`).first()
+        .simulate('click')
+      await flushPromises()
+      await wrapper.update()
+      expect(await wrapper.find(`[data-set='ferramenta']`)).toHaveLength(1)
     })
   })
 })
