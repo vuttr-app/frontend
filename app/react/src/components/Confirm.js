@@ -41,20 +41,19 @@ export default class Confirm extends React.Component {
 
   onOkClick = () => {
     this.setState({ visible: false })
-    resolve(Promise.resolve())
+    resolve(true)
   }
 
   onCancelClick = () => {
     this.setState({ visible: false })
-    resolve(Promise.reject())
+    resolve(false)
   }
 
   show = (props ={}) => {
     const showConfirmProps = { ...this.props.createConfirmProps, ...props }
     this.setState({ visible: true, showConfirmProps })
-    return new Promise(result => {
-      console.log(result)
-      resolve = result
+    return new Promise(status => {
+      resolve = status
     })
   }
 
@@ -70,31 +69,43 @@ export default class Confirm extends React.Component {
           id="exampleModal" tabIndex="-1" role="dialog"
           style={{display: 'block'}}
           onClick={this.onCancelClick}
+          data-set="confirm"
         >
           <div className="modal-dialog" role="document">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">
-                  {title || defaultProps.title}
-                </h5>
-                <button type="button" className="close" data-dismiss="modal"
+                <h5
+                  className="modal-title"
+                  data-set='title'
+                >{title || defaultProps.title}</h5>
+                <button
+                  type="button"
+                  className="close"
+                  data-dismiss="modal"
                   aria-label="Close"
                   onClick={this.onCancelClick}
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
+                  action-trigger="dismiss"
+                ><span aria-hidden="true">&times;</span></button>
               </div>
-              <div className="modal-body">
-                {body || defaultProps.body}
-              </div>
+              <div
+                className="modal-body"
+                data-set='body'
+              >{body || defaultProps.body}</div>
               <div className="modal-footer">
-                <button type="button" className="btn btn-secondary"
-                  data-dismiss="modal" onClick={this.onCancelClick}
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-dismiss="modal"
+                  onClick={this.onCancelClick}
+                  action-trigger='cancelText'
                 >{cancelText || defaultProps.cancelText}</button>
-                <button type="button" className="btn btn-primary"
+                <button
+                  type="button"
+                  className="btn btn-primary"
                   onClick={this.onOkClick}
                   ref={element => this.buttonOk = element}
                   autoFocus
+                  action-trigger='okText'
                 >{okText || defaultProps.okText}</button>
               </div>
             </div>

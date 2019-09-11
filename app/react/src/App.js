@@ -40,16 +40,15 @@ export default class App extends React.Component {
       body: 'Are you sure remove tool?',
       okText: 'Yes, remove'
     })
-      .then(() => {
-        api.removeTool(tool.id)
-          .then(() => {
-            const before = this.state.tools
-            const after = before.filter(t => t.id !== tool.id)
-            this.setState({ tools: after })
-          })
-      })
-      .catch(errors => {
-        console.log('Remotion canceled.')
+      .then(result => {
+        if (result) {
+          api.removeTool(tool.id)
+            .then(() => {
+              const before = this.state.tools
+              const after = before.filter(t => t.id !== tool.id)
+              this.setState({ tools: after })
+            })
+        }
       })
   }
 

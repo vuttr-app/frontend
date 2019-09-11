@@ -196,7 +196,8 @@ describe(`<App />`, () => {
     })
 
     it(`should be presented empty from one size after confirm`, async() => {
-      Confirm.show = jest.fn().mockImplementationOnce(() => Promise.resolve())
+      Confirm.show = jest.fn()
+        .mockImplementationOnce(() => Promise.resolve(true))
       await wrapper.find(`[action-trigger='remover']`).first()
         .simulate('click')
       await flushPromises()
@@ -207,7 +208,7 @@ describe(`<App />`, () => {
 
     it(`should be presented one from one size after cancel`, async() => {
       Confirm.show = jest.fn()
-        .mockImplementationOnce(() => Promise.reject())
+        .mockImplementationOnce(() => Promise.resolve(false))
       await wrapper.find(`[action-trigger='remover']`).first()
         .simulate('click')
       await flushPromises()
