@@ -1,17 +1,20 @@
 import React from 'react'
 
 import '@/App.css'
-import Confirm from '@/services/Confirm'
+
 import api from '@/services/api'
+import Confirm from '@/services/Confirm'
+
 import Tools from '@/components/Tools'
 import Form from '@/components/Form'
+import Modal from '@/components/Modal'
 
 export default class App extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      tools: [],
-      show: false
+      show: false,
+      tools: []
     }
   }
 
@@ -30,7 +33,8 @@ export default class App extends React.Component {
       .then(tool => {
         const before = this.state.tools
         const after = [ ...before, tool ]
-        this.setState({ tools: after, show: false })
+        this.setState({ tools: after })
+        this.onModalClose()
       })
   }
 
@@ -56,6 +60,10 @@ export default class App extends React.Component {
     this.setState({ show: true })
   }
 
+  onModalClose = () => {
+    this.setState({ show: false })
+  }
+
   render () {
     const { show, tools } = this.state
     return (
@@ -64,10 +72,14 @@ export default class App extends React.Component {
         <h3>Very Useful Tools to Remember</h3>
         <Tools
           tools={tools}
-          onRemove={this.onToolRemove}
           onAdd={this.onToolAdd}
+          onRemove={this.onToolRemove}
         />
-        <Form show={show} onConfirm={this.onFormConfirm}/>
+        <Modal
+          visible={show}
+          onClose={this.onModalClose}
+          body={<Form show={true} onConfirm={this.onFormConfirm}/>}
+        />
       </div>
     )
   }
