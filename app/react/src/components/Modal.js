@@ -22,27 +22,12 @@ export default class Modal extends React.Component {
     }
   }
 
-  // modalRef = React.createRef()
-
-  // documentClick = (e) => {
-  //   console.log(this.modalRef, e.target)
-  //   if (
-  //     e.target === this.modalRef.current ||
-  //     this.modalRef.current.contains(e.target)
-  //   ) {
-  //     return
-  //   }
-  //   this.onDismissClick()
-  // }
-
   componentDidMount () {
     document.addEventListener('keydown', this.keyDown, false)
-    // document.addEventListener('click', this.documentClick, false)
   }
 
   componentWillUnmount () {
     document.removeEventListener('keydown', this.keyDown, false)
-    // document.removeEventListener('click', this.documentClick, false)
   }
 
   render () {
@@ -62,7 +47,6 @@ export default class Modal extends React.Component {
           <div
             className="modal-dialog"
             role="document"
-            // ref={this.modalRef}
           >
             <div className="modal-content">
               <div className="modal-header">

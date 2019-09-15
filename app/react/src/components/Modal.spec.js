@@ -64,19 +64,6 @@ describe(`<Modal />`, () => {
       expect(callback).toHaveBeenCalled()
     })
 
-    xit(`should be hide modal when document is clicked`, async () => {
-      const callback = jest.fn()
-      render(
-        <Modal
-          visible={true}
-          onClose={callback}
-        />,
-        document.createElement('div')
-      )
-      document.dispatchEvent(new MouseEvent('click', { bubbles: true }))
-      expect(callback).toHaveBeenCalled()
-    })
-
     it(`should not be hide modal when modal is clicked`, async () => {
       const callback = jest.fn()
       const wrapper = await mount(
