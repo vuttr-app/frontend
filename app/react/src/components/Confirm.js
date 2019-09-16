@@ -63,9 +63,9 @@ export default class Confirm extends React.Component {
     return (
       visible &&
       <>
-        <div className="modal-backdrop fade show"></div>
+        <div className="modal-backdrop fade in"></div>
         <div
-          className="modal fade show data-set-confirm"
+          className="modal fade in data-set-confirm"
           id="exampleModal" tabIndex="-1" role="dialog"
           style={{display: 'block'}}
           onClick={this.onCancelClick}
@@ -75,11 +75,11 @@ export default class Confirm extends React.Component {
             <div className="modal-content">
               <div className="modal-header">
                 <h5
-                  className="modal-title"
+                  className="modal-title pull-left"
                   data-set='title'
                 >{title || defaultProps.title}</h5>
                 <button
-                  type="button"
+                  type="button pull-right"
                   className="close"
                   data-dismiss="modal"
                   aria-label="Close"
