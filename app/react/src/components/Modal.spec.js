@@ -14,8 +14,6 @@ describe(`<Modal />`, () => {
       expect(wrapper.find(`[data-set='modal']`)).toHaveLength(1)
       expect(wrapper.find(`[data-set='modal-title']`)).toHaveLength(1)
       expect(wrapper.find(`[data-set='modal-body']`)).toHaveLength(1)
-      expect(wrapper.find(`[data-set='modal-footer']`))
-        .toHaveLength(1)
     })
   })
 
@@ -33,7 +31,6 @@ describe(`<Modal />`, () => {
       expect(wrapper.find(`[data-set='my-title']`)).toHaveLength(1)
       expect(wrapper.find(`[data-set='my-body']`)).toHaveLength(1)
       expect(wrapper.find(`[data-set='my-input']`)).toHaveLength(1)
-      expect(wrapper.find(`[data-set='my-footer']`)).toHaveLength(1)
     })
   })
 
