@@ -67,9 +67,13 @@ export default class App extends React.Component {
   render () {
     const { show, tools } = this.state
     return (
-      <div className='App'>
-        <h1>VUTTR</h1>
-        <h3>Very Useful Tools to Remember</h3>
+      <div className="App container">
+        <div className="row">
+          <div className="col-sm-10 col-sm-offset-1">
+            <h1>VUTTR</h1>
+            <h3>Very Useful Tools to Remember</h3>
+          </div>
+        </div>
         <Tools
           tools={tools}
           onAdd={this.onToolAdd}
@@ -78,6 +82,7 @@ export default class App extends React.Component {
         <Modal
           visible={show}
           onClose={this.onModalClose}
+          title="+ Add new tool"
           body={<Form show={true} onConfirm={this.onFormConfirm}/>}
         />
       </div>

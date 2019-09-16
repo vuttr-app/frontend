@@ -3,7 +3,6 @@ import React from 'react'
 const defaultProps = {
   title: '',
   body: '',
-  footer: '',
   onClose: () => {}
 }
 
@@ -36,11 +35,12 @@ export default class Modal extends React.Component {
       visible &&
       <>
         <div
-          className="modal-backdrop fade show"
+          className="modal-backdrop fade in"
         ></div>
         <article
-          className="modal fade show data-set-modal"
-          tabIndex="-1" role="dialog"
+          className="modal fade in data-set-modal"
+          tabIndex="-1"
+          role="dialog"
           style={{display: 'block'}}
           data-set="modal"
         >
@@ -50,13 +50,13 @@ export default class Modal extends React.Component {
           >
             <div className="modal-content">
               <div className="modal-header">
-                <h5
-                  className="modal-title"
+                <h4
+                  className="modal-title pull-left"
                   data-set="modal-title"
-                >{title || defaultProps.title}</h5>
+                >{title || defaultProps.title}</h4>
                 <button
                   type="button"
-                  className="close"
+                  className="close pull-right"
                   data-dismiss="modal"
                   aria-label="Close"
                   onClick={this.onDismissClick}
@@ -65,12 +65,8 @@ export default class Modal extends React.Component {
               </div>
               <div
                 className="modal-body"
-                data-set='modal-body'
+                data-set="modal-body"
               >{body || defaultProps.body}</div>
-              <footer
-                className="modal-footer"
-                data-set="modal-footer"
-              >{footer || defaultProps.footer}</footer>
             </div>
           </div>
         </article>

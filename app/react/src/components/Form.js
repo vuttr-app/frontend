@@ -40,33 +40,53 @@ export default class Form extends React.Component {
   }
 
   render () {
+    const { show } = this.props
     return(
-      this.props.show &&
+      show &&
       <div>
-        <input
-          type='text'
-          data-input='title'
-          onKeyUp={this.onTitleKeyUp}
-        />
-        <input
-          type='text'
-          data-input='link'
-          onKeyUp={this.onLinkKeyUp}
-        />
-        <input
-          type='text'
-          data-input='description'
-          onKeyUp={this.onDescriptionKeyUp}
-        />
-        <input
-          type='text'
-          data-input='marcadores'
-          onKeyUp={this.onMarcadoresKeyUp}
-        />
-        <button
-          action-trigger='adicionar'
-          onClick={this.onConfirmClick}
-        >Add</button>
+        <fieldset className="form-group">
+          <label>Tool Name</label>
+          <input
+            className="form-control"
+            type='text'
+            data-input='title'
+            onKeyUp={this.onTitleKeyUp}
+          />
+        </fieldset>
+        <fieldset className="form-group">
+          <label>Tool Link</label>
+          <input
+            className="form-control"
+            type='text'
+            data-input='link'
+            onKeyUp={this.onLinkKeyUp}
+          />
+        </fieldset>
+        <fieldset className="form-group">
+          <label>Tool Description</label>
+          <textarea
+            className="form-control"
+            data-input='description'
+            rows='5'
+            onKeyUp={this.onDescriptionKeyUp}
+          />
+        </fieldset>
+        <fieldset className="form-group">
+          <label>Tags</label>
+          <input
+            className="form-control"
+            type='text'
+            data-input='marcadores'
+            onKeyUp={this.onMarcadoresKeyUp}
+          />
+        </fieldset>
+        <fieldset className="form-group">
+          <button
+            className="btn btn-default pull-right"
+            action-trigger='adicionar'
+            onClick={this.onConfirmClick}
+          >Add Tool</button>
+        </fieldset>
       </div>
     )
   }

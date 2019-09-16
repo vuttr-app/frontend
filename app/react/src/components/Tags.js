@@ -8,7 +8,10 @@ export default class Tags extends React.Component {
       <Tag tag={tag} key={tag.toString()}/>
     )
     return (
-      <div data-set='tags'>{tags}</div>
+      <div
+        className="col-sm-12"
+        data-set='tags'
+      >{tags}</div>
     )
   }
 }

@@ -42,17 +42,49 @@ export default class Tools extends React.Component {
       )
     return (
       <div>
-        <input
-          type='text'
-          data-input='criterio'
-          onKeyUp={this.onCriterioKeyUp}
-        />
-        <input
-          type='checkbox'
-          data-input='tags'
-          onClick={this.onTagsClick}
-        />
-        <button action-trigger='nova' onClick={this.onAddClick}>Add</button>
+        <div className="row">
+          <div className="col-sm-10 col-sm-offset-1">
+            <div className="row">
+              <div className="col-sm-6 form-inline">
+                <div className="inner-addon left-addon">
+                  <i className="glyphicon glyphicon-search"/>
+                  <input
+                    className="form-control criterio"
+                    type='text'
+                    placeholder='search'
+                    data-input='criterio'
+                    onKeyUp={this.onCriterioKeyUp}
+                  />
+                </div>
+              </div>
+              <div className="col-sm-4 form-inline">
+                <div className="checkbox">
+                  <label>
+                    <input
+                      type='checkbox'
+                      data-input='tags'
+                      onClick={this.onTagsClick}
+                    />
+                    search in tags only
+                  </label>
+                </div>
+              </div>
+              <div className="col-sm-2">
+                <button
+                  className="btn btn-default btn-md pull-right"
+                  action-trigger='nova'
+                  onClick={this.onAddClick}
+                >
+                  <span
+                    className="glyphicon glyphicon-plus"
+                    aria-hidden='true'
+                  />
+                  Add
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
         {tools}
       </div>
     )
